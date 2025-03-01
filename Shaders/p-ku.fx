@@ -19,7 +19,7 @@
 #if BARREL_DISTORTION
 uniform float Barrel_Distortion_Intensity < __UNIFORM_SLIDER_FLOAT1
 	ui_min = 0.0; ui_max = 1.0;
-> = 0.2;
+> = 0.1;
 // from https://www.shadertoy.com/view/lstyzs
 float2 lensDistort(float2 c, const float factor)
 {
