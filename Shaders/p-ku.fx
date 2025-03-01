@@ -10,14 +10,33 @@
 #ifndef DITHERING
     #define DITHERING 1
 #endif
+#ifndef BARREL_DISTORTION
+    #define BARREL_DISTORTION 1
+#endif
 
 #include "ReShadeUI.fxh"
+
+#if BARREL_DISTORTION
+uniform float Barrel_Distortion_Intensity < __UNIFORM_SLIDER_FLOAT1
+	ui_min = 0.0; ui_max = 1.0;
+> = 0.2;
+// from https://www.shadertoy.com/view/lstyzs
+float2 lensDistort(float2 c, const float factor)
+{
+    c = (c - 0.5) * 2.0;
+    c.y *= 3.0/4.0;
+    c /= 1.0 + dot(c, c) * - factor + 1.6 * factor;
+    c.y *= 4.0/3.0;
+    c = c * 0.5 + 0.5;
+    return c;
+}
+#endif
 
 #if CHROMATIC_ABERRATION
 #define PI 3.14159265359
 uniform float Chromatic_Aberration_Intensity < __UNIFORM_SLIDER_FLOAT1
 	ui_min = 0.0; ui_max = 1.0;
-> = 0.15;
+> = 0.2;
 uniform int Chromatic_Aberration_Samples < __UNIFORM_SLIDER_INT1
 	ui_min = 4; ui_max = 32; ui_step = 4;
 > = 4;
@@ -65,6 +84,10 @@ float hash21(float2 p)
 #endif
 float4 PkuPass(float4 vpos : SV_Position, float2 tex : TexCoord) : SV_Target
 {
+	#if BARREL_DISTORTION
+		tex = lensDistort(tex, Barrel_Distortion_Intensity);
+	#endif
+
 	float4 col = tex2D(ReShade::BackBuffer, tex);
 #if CHROMATIC_ABERRATION | VIGNETTE 
     const float2 reso = float2(BUFFER_WIDTH, BUFFER_HEIGHT);
