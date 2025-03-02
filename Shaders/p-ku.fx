@@ -55,10 +55,6 @@
         ui_min = 4; ui_max = 32; ui_step = 4;
         ui_category = "Chromatic Aberration";
     > = 4;
-    uniform bool Chromatic_Aberration_Jitter <
-        ui_label = "Jitter";
-        ui_category = "Chromatic Aberration";
-    > = true;
 #endif
 
 #if VIGNETTE
@@ -153,7 +149,6 @@ float4 PkuPass(float4 vpos : SV_Position, float2 tex : TexCoord) : SV_Target
 			float white_noise = 0.5;
         #endif
 
-        if (Chromatic_Aberration_Jitter) white_noise = nrand(tex, seconds);
         float2 sample_uv = tex + uv_delta * white_noise;
         float spectrum_pos = spectrum_delta * white_noise;
 
