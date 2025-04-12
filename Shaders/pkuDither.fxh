@@ -22,8 +22,9 @@ sampler Noise_Sampler {
   AddressV = REPEAT;
 };
 
-uniform int framecount < source = "framecount";
+uniform uint framecount < source = "framecount";
 > ;
+
 float4 triangle(const float4 noise) {
   return sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));
 }
