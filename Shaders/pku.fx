@@ -78,8 +78,8 @@ float GetBorderMask(float2 borderCoord, const float maxx) {
 #ifndef CA_JITTER // Jitters chromatic aberration samples
 #define CA_JITTER 1
 #endif
-#ifndef CA_FOV   // Uses the result from perspective
-#define CA_FOV 1 // correction for chromatic aberration
+#ifndef CA_VIA_FOV   // Uses the result from perspective
+#define CA_VIA_FOV 1 // correction for chromatic aberration
 #endif
 uniform float ca_amount < __UNIFORM_SLIDER_FLOAT1 ui_label = "Intensity";
 ui_min = 0.0;
@@ -152,7 +152,7 @@ float4 pku_PS(float4 pixelPos : SV_Position, float2 uv : TEXCOORD0,
 
 #if CHROMATIC_ABERRATION
 // determine how far to blur
-#if PERSPECTIVE_CORRECTION & CA_FOV
+#if PERSPECTIVE_CORRECTION & CA_VIA_FOV
   const float2 croppedUv = 0.5 + (uv - 0.5) / CropFactor;
   const float2 uv_range = croppedUv - uv_distort;
   const float2 uv_delta = ca_amount * uv_range / CA_SAMPLES;
