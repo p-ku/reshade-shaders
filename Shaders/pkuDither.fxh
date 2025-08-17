@@ -7,6 +7,8 @@
 #endif
 
 #define TEX_SIZE 1024u
+uniform uint framecount < source = "framecount";
+> ;
 
 texture Dither_Noise_Tex < source = "pkuBlueNoise.png";
 pooled = true;
@@ -22,27 +24,24 @@ sampler Noise_Sampler {
   AddressV = REPEAT;
 };
 
-uniform uint framecount < source = "framecount";
-> ;
-
-float4 triangle(const float4 noise) {
+float4 triangle(float4 noise) {
   return sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));
 }
 
-float3 triangle(const float3 noise) {
+float3 triangle(float3 noise) {
   return sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));
 }
 
-float2 triangle(const float2 noise) {
+float2 triangle(float2 noise) {
   return sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));
 }
 
-float triangle(const float noise) {
+float triangle(float noise) {
   return sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));
 }
 
-float4 dither(const float4 color, const uint2 pixelPos) {
-  const uint2 dip = (1337 * framecount + pixelPos) % uint2(TEX_SIZE, TEX_SIZE);
-  const float4 noise = triangle(2.0 * tex2Dfetch(Noise_Sampler, dip, 0) - 1.0);
+float4 dither(float4 color, uint2 pixelPos) {
+  uint2 dip = 1225 * (framecount % TEX_SIZE) + pixelPos;
+  float4 noise = triangle(2.0 * tex2Dfetch(Noise_Sampler, dip, 0) - 1.0);
   return color + (noise + 0.5) / QUANTIZATION_LEVEL;
 }
