@@ -93,20 +93,11 @@ float4 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
   display = GridModeViewPass(display, viewCoordDistort * viewProp);
 #endif
   display = applyBorder(display, viewCoordDistort);
-//  if (viewCoordDistort.x == 1.0)
-//  display = float3(0f, 1f, 0f);
 #endif
   return dither(float4(display, 1.0), uint2(pos.xy));
 }
 
-technique UseTexture {
-  // #if PERSPECTIVE_CORRECTION
-  //   pass {
-  //     VertexShader = PostProcessVS; // the included fullscreen‐quad VS
-  //     PixelShader = PS_Texture_Gen;
-  //     RenderTarget = PCTex; // render into texTarget
-  //   }
-  // #endif
+technique pkuFX {
   pass {
     VertexShader = pku_VS;
     PixelShader = PS_Effects;
