@@ -42,17 +42,17 @@ void pku_VS(in uint id : SV_VertexID, out float4 position : SV_Position,
   viewCoord = float2(position.x, -position.y) * viewProportions;
 }
 
-float4 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
+float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
                   float2 viewCoord : TEXCOORD1)
     : SV_Target {
 #if PERSPECTIVE_CORRECTION | CHROMATIC_ABERRATION | VIGNETTE
   float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
   float radius = length(viewCoord);
 #endif
-
+  float fs = 0f;
 #if PERSPECTIVE_CORRECTION
-  float2 viewCoordDistort =
-      applyPerspectiveCorrection(pos.xy, viewCoord, viewProp);
+  float modRad = applyPerspectiveCorrection(pos.xy, viewCoord, viewProp, fs);
+  float2 viewCoordDistort = modRad * normalize(viewCoord) / viewProp;
   float2 uv_distort = 0.5f * (1f + viewCoordDistort);
 #endif
 #if CHROMATIC_ABERRATION | FILM_GRAIN
@@ -74,13 +74,15 @@ float4 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #elif PERSPECTIVE_CORRECTION
-  float3 display = tex2D(ReShade::BackBuffer, uv_distort);
+  float3 display = tex2D(ReShade::BackBuffer, uv_distort).rgb;
 #else
-  float3 display = tex2Dfetch(ReShade::BackBuffer, pos.xy);
+  float3 display = tex2Dfetch(ReShade::BackBuffer, pos.xy).rgb;
 #endif
 
 #if VIGNETTE
-  display = applyVignette(display, radius);
+  fs = v_amount;
+  display = applyVignette(display, radius, fs);
+
 #endif
 
 #if FILM_GRAIN
@@ -94,9 +96,8 @@ float4 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
   display = applyBorder(display, viewCoordDistort);
 #endif
-  return dither(float4(display, 1.0), uint2(pos.xy));
+  return applyDither(display, uint2(pos.xy));
 }
-
 technique pkuFX {
   pass {
     VertexShader = pku_VS;
