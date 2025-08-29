@@ -7,7 +7,7 @@ A collection of shader effects.
 ## Perspective Correction
 Alleviate distortion from wide field of view.
 
-[In-depth explanation in this white paper.](https://github.com/user-attachments/files/22053176/aMoreNaturalPerspective.pdf)
+[In-depth explanation in this white paper.](https://github.com/user-attachments/files/22053379/aMoreNaturalPerspective.pdf)
 
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
