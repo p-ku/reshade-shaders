@@ -10,13 +10,6 @@
 uniform uint framecount < source = "framecount";
 > ;
 
-// static const uint3 perms[24] = {
-//    uint3(0, 1, 2), uint3(0, 1, 3), uint3(0, 2, 1), uint3(0, 2, 3),
-//    uint3(0, 3, 1), uint3(0, 3, 2), uint3(1, 0, 2), uint3(1, 0, 3),
-//    uint3(1, 2, 0), uint3(1, 2, 3), uint3(1, 3, 0), uint3(1, 3, 2),
-//    uint3(2, 0, 1), uint3(2, 0, 3), uint3(2, 1, 0), uint3(2, 1, 3),
-//    uint3(2, 3, 0), uint3(2, 3, 1), uint3(3, 0, 1), uint3(3, 0, 2),
-//    uint3(3, 1, 0), uint3(3, 1, 2), uint3(3, 2, 0), uint3(3, 2, 1)};
 static const uint3 perms[24] = {
     uint3(0, 1, 2), uint3(1, 2, 3), uint3(2, 3, 0), uint3(3, 0, 1),
     uint3(0, 2, 3), uint3(1, 3, 0), uint3(2, 0, 1), uint3(3, 1, 2),
@@ -64,5 +57,5 @@ float3 applyDither(float3 color, uint2 pixelPos) {
   uint3 p = perms[rotation];
   float3 dither = float3(channels[p.x], channels[p.y], channels[p.z]);
   dither = (dither + 0.5) / QUANTIZATION_LEVEL;
-  return color + dither;
+  return saturate(color) + dither;
 }
