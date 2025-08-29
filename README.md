@@ -2,12 +2,14 @@
 
 A collection of shader effects.
 
-[Video demonstration.](https://youtu.be/FvE9wk0edbo)
-
 [Similar effects in motion on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
 ## Perspective Correction
-Alleviate distortion from wide field of view. In-depth explanation in this [white paper](https://github.com/user-attachments/files/22053176/aMoreNaturalPerspective.pdf).
+Alleviate distortion from wide field of view.
+
+[In-depth explanation in this white paper.](https://github.com/user-attachments/files/22053176/aMoreNaturalPerspective.pdf)
+
+[Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
 ## Chromatic Aberration
 Simulates the color fringing seen in lenses.
