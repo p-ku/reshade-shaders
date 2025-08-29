@@ -25,6 +25,6 @@ Simulates natural vignette as seen on imaging surfaces.
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Vignetting#Natural_vignetting)
 
 ## Dithering
-A dithering pass for the final image. Uses a triangular, blue noise.
+A dithering pass for the final image. Uses triangular, blue noise.
 
 [Some examples, courtesy of hornet on Shadertoy.](https://www.shadertoy.com/view/WldSRf)
