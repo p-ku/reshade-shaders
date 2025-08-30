@@ -13,7 +13,7 @@ Effects are enabled using preprocessor flags:\
 ## Perspective Correction
 Alleviate distortion from wide field of view.
 
-[In-depth explanation in this white paper.](https://github.com/user-attachments/files/22053379/aMoreNaturalPerspective.pdf)
+[In-depth explanation in this white paper.](https://github.com/user-attachments/files/22060919/aMoreNaturalPerspective.pdf)
 
 User variables:\
 `Distance`: Distance from screen to viewer.\
