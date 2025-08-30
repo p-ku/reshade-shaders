@@ -3,14 +3,14 @@
 #ifndef FOV_TYPE   // 0 for horizontal
 #define FOV_TYPE 0 // 1 for vertical
 #endif             // 2 for diagonal
-#ifndef TEST_GRID
-#define TEST_GRID 0
+#ifndef LUT_MODE
+#define LUT_MODE 1
 #endif
 #ifndef PC_STEPS
 #define PC_STEPS 4
 #endif
-#ifndef LUT_MODE
-#define LUT_MODE 1
+#ifndef TEST_GRID
+#define TEST_GRID 0
 #endif
 
 uniform float screenDistance < __UNIFORM_SLIDER_FLOAT1 ui_label = "Distance";
@@ -36,12 +36,12 @@ ui_units = "°";
 ui_label = "FOV";
 ui_tooltip = "Should match in-game FOV value.";
 ui_min = 1u;
-ui_max = 180u;
+ui_max = 160u;
 ui_category = "Perspective Correction";
 > = 75u;
 
 uniform float zoom_factor < __UNIFORM_SLIDER_FLOAT1 ui_label = "Zoom";
-ui_min = 0f;
+ui_min = 0.5;
 ui_max = 2f;
 ui_category = "Perspective Correction";
 > = 1f;
@@ -64,6 +64,7 @@ ui_tooltip = "Adjust calibration grid bar width in pixels.";
 ui_min = 2;
 ui_max = 16;
 > = 4;
+
 uniform float BackgroundDim < __UNIFORM_SLIDER_FLOAT1 ui_category =
     "Perspective Correction";
 ui_label = "Background dimming";
@@ -193,7 +194,6 @@ float getOmega(float2 viewProp) {
     float2 delY = float2(ddx(viewCoord.y), ddy(viewCoord.y));
     // Scale coordinates to grid size and center
     viewCoord = frac(viewCoord * GridSize) - 0.5;
-    // viewCoord = frac(viewCoord * GridSize);
 
     /* Scale coordinates to pixel size for anti-aliasing of grid
        using anti-aliasing step function from research paper

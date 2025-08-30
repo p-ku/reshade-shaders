@@ -80,9 +80,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #if VIGNETTE
-  fs = v_amount;
   display = applyVignette(display, radius, fs);
-
 #endif
 
 #if FILM_GRAIN
