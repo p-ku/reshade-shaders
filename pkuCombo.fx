@@ -1,5 +1,4 @@
-#include "ReShade.fxh"
-#include "ReShadeUI.fxh"
+#include "pku.fxh"
 #include "pkuDither.fxh"
 #ifndef PERSPECTIVE_CORRECTION
 #define PERSPECTIVE_CORRECTION 1
@@ -33,14 +32,6 @@ float nrand(float2 seed) {
   return frac(sin(dot(seed, float2(12.9898, 78.233))) * 43758.5453);
 }
 #endif
-void pku_VS(in uint id : SV_VertexID, out float4 position : SV_Position,
-            out float2 uv : TEXCOORD, out float2 viewCoord : TEXCOORD1) {
-  uv.x = (id == 2) ? 2.0 : 0.0;
-  uv.y = (id == 1) ? 2.0 : 0.0;
-  position = float4(uv * float2(2.0, -2.0) + float2(-1.0, 1.0), 0.0, 1.0);
-  float2 viewProportions = normalize(BUFFER_SCREEN_SIZE);
-  viewCoord = float2(position.x, -position.y) * viewProportions;
-}
 
 float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
                   float2 viewCoord : TEXCOORD1)
@@ -74,9 +65,9 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #elif PERSPECTIVE_CORRECTION
-  float3 display = tex2D(ReShade::BackBuffer, uv_distort).rgb;
+  float3 display = tex2D(BackBuffer, uv_distort).rgb;
 #else
-  float3 display = tex2Dfetch(ReShade::BackBuffer, pos.xy).rgb;
+  float3 display = tex2Dfetch(BackBuffer, pos.xy).rgb;
 #endif
 
 #if VIGNETTE

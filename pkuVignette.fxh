@@ -1,14 +1,16 @@
 #pragma once
 
 #if PERSPECTIVE_CORRECTION
-uniform float v_factor < __UNIFORM_SLIDER_FLOAT1 ui_category_closed = true;
+uniform float v_factor < ui_type = "slider";
+ui_category_closed = true;
 ui_label = "Intensity";
 ui_min = 0.0;
 ui_max = 1.0;
 ui_category = "Vignette";
 > = 1.0;
 #else
-uniform float v_amount < __UNIFORM_SLIDER_FLOAT1 ui_category_closed = true;
+uniform float v_amount < ui_type = "slider";
+ui_category_closed = true;
 ui_label = "Intensity";
 ui_min = 0.0;
 ui_max = 1.0;

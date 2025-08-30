@@ -13,7 +13,8 @@
 #define TEST_GRID 0
 #endif
 
-uniform float screenDistance < __UNIFORM_SLIDER_FLOAT1 ui_label = "Distance";
+uniform float screenDistance < ui_type = "slider";
+ui_label = "Distance";
 ui_tooltip = "Physical distance from screen. Units for screen distance and "
              "screen diagonal should match.";
 ui_step = 1f;
@@ -22,7 +23,8 @@ ui_max = 200f;
 ui_category = "Perspective Correction";
 > = 22f;
 
-uniform float screenDiagonal < __UNIFORM_SLIDER_FLOAT1 ui_label = "Diagonal";
+uniform float screenDiagonal < ui_type = "slider";
+ui_label = "Diagonal";
 ui_tooltip = "Physical length of screen diagonal. Units for screen distance "
              "and screen diagonal should match.";
 ui_step = 1f;
@@ -31,7 +33,8 @@ ui_max = 200f;
 ui_category = "Perspective Correction";
 > = 27f;
 
-uniform uint gameFov < __UNIFORM_SLIDER_INT1 ui_category_closed = true;
+uniform uint gameFov < ui_type = "slider";
+ui_category_closed = true;
 ui_units = "°";
 ui_label = "FOV";
 ui_tooltip = "Should match in-game FOV value.";
@@ -40,14 +43,16 @@ ui_max = 160u;
 ui_category = "Perspective Correction";
 > = 75u;
 
-uniform float zoom_factor < __UNIFORM_SLIDER_FLOAT1 ui_label = "Zoom";
+uniform float zoom_factor < ui_type = "slider";
+ui_label = "Zoom";
 ui_min = 0.5;
 ui_max = 2f;
 ui_category = "Perspective Correction";
 > = 1f;
 
 #if TEST_GRID
-uniform uint GridSize < __UNIFORM_SLIDER_INT1 ui_text = "Calibration Grid";
+uniform uint GridSize < ui_type = "slider";
+ui_text = "Calibration Grid";
 ui_category = "Perspective Correction";
 ui_label = "Size";
 ui_tooltip = "Adjust calibration grid size.";
@@ -56,8 +61,8 @@ ui_max = 32;
 ui_category = "Perspective Correction";
 > = 16;
 
-uniform uint GridThickness < __UNIFORM_SLIDER_INT1 ui_category =
-    "Perspective Correction";
+uniform uint GridThickness < ui_type = "slider";
+ui_category = "Perspective Correction";
 ui_units = " pixels";
 ui_label = "Thickness";
 ui_tooltip = "Adjust calibration grid bar width in pixels.";
@@ -65,8 +70,8 @@ ui_min = 2;
 ui_max = 16;
 > = 4;
 
-uniform float BackgroundDim < __UNIFORM_SLIDER_FLOAT1 ui_category =
-    "Perspective Correction";
+uniform float BackgroundDim < ui_type = "slider";
+ui_category = "Perspective Correction";
 ui_label = "Background dimming";
 ui_tooltip = "Choose the calibration background dimming.";
 ui_min = 0f;
@@ -229,7 +234,7 @@ float getOmega(float2 viewProp) {
   }
   technique CreateCorrectionLUT {
     pass {
-      VertexShader = PostProcessVS; // the included fullscreen‐quad VS
+      VertexShader = pku_VS; // the included fullscreen‐quad VS
       PixelShader = PS_Texture_Gen;
       RenderTarget = PCTex; // render into texTarget
     }

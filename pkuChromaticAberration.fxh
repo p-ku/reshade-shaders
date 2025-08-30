@@ -8,7 +8,8 @@
 #define CA_JITTER 1
 #endif
 
-uniform float ca_amount < __UNIFORM_SLIDER_FLOAT1 ui_category_closed = true;
+uniform float ca_amount < ui_type = "drag";
+ui_category_closed = true;
 ui_category = "Chromatic Aberration";
 ui_label = "Intensity";
 ui_min = 0.0;
@@ -35,7 +36,7 @@ float3 applyChromaticAberration(float2 uv, float2 viewCoord,
     spectrum_filter.r = a * saturate(3.0 - 6.0 * spectrum_pos);
     spectrum_filter.g = saturate(2.0 - 6.0 * abs(spectrum_pos - 0.5));
     spectrum_filter.b = a * saturate(3.0 + 6.0 * (spectrum_pos - 1.0));
-    sum += tex2D(ReShade::BackBuffer, sample_uv).rgb * spectrum_filter;
+    sum += tex2D(BackBuffer, sample_uv).rgb * spectrum_filter;
     filter_sum += spectrum_filter;
     spectrum_pos += spectrum_delta;
     sample_uv += uv_delta;
