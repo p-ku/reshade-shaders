@@ -11,8 +11,8 @@ Effects are enabled using preprocessor flags:\
 [Similar effects demonstrated on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
 ## Perspective Correction
+![perspectiveCorrection](https://github.com/user-attachments/assets/5146f78d-8b06-4aa5-942f-dc0405db9075)
 Alleviate distortion from wide field of view.
-
 [In-depth explanation in this white paper.](https://github.com/user-attachments/files/22060919/aMoreNaturalPerspective.pdf)
 
 User variables:\
@@ -33,6 +33,7 @@ When using `LUT_MODE`, you must enable the `CreateCorrectionLUT` technique in or
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
 ## Chromatic Aberration
+![chromaticAberration](https://github.com/user-attachments/assets/7a25f22b-ec80-4490-9cd6-ee58b7480b34)
 Simulates the color fringing seen in lenses.
 
 User variables:\
@@ -45,9 +46,11 @@ Preprocessor definitions:\
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
 ## Film Grain
+![filmGrain](https://github.com/user-attachments/assets/aaf87f3a-57e8-4b46-a554-8f2f73c66b7f)
 Adds noise to the image. Noise is applied to the luma rather that directly to color values.
 
 ## Vignette
+![vignette](https://github.com/user-attachments/assets/63eea488-64fe-4e59-89df-14f677f6030a)
 Simulates natural vignette as seen on imaging surfaces.
 
 User variables:\
