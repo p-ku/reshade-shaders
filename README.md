@@ -10,7 +10,7 @@ Effects are enabled using preprocessor flags:\
 
 [Similar effects demonstrated on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
-## Perspective Correction
+## `Perspective Correction`
 ![perspectiveCorrection](https://github.com/user-attachments/assets/2444a772-8f49-4620-bece-4881553ec698)
 
 Alleviate distortion from wide field of view.
