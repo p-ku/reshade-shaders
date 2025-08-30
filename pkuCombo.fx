@@ -5,13 +5,13 @@
 #define PERSPECTIVE_CORRECTION 1
 #endif
 #ifndef CHROMATIC_ABERRATION
-#define CHROMATIC_ABERRATION 1
+#define CHROMATIC_ABERRATION 0
 #endif
 #ifndef VIGNETTE
-#define VIGNETTE 1
+#define VIGNETTE 0
 #endif
 #ifndef FILM_GRAIN
-#define FILM_GRAIN 1
+#define FILM_GRAIN 0
 #endif
 #if CHROMATIC_ABERRATION
 #include "pkuChromaticAberration.fxh"

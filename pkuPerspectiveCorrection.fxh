@@ -227,7 +227,7 @@ float getOmega(float2 viewProp) {
     float fs = getFs(omega);
     return calculateCorrection(radius, viewProp, omega, fs);
   }
-  technique CreateTexture {
+  technique CreateCorrectionLUT {
     pass {
       VertexShader = PostProcessVS; // the included fullscreen‐quad VS
       PixelShader = PS_Texture_Gen;
