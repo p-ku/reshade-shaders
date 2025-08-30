@@ -6,8 +6,9 @@ Effects are enabled using preprocessor flags:\
 `CHROMATIC_ABERRATION`\
 `FILM_GRAIN`\
 `PERSPECTIVE_CORRECTION`\
-`VIGNETTE`\
-[Similar effects in motion on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
+`VIGNETTE`
+
+[Similar effects demonstrated on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
 ## Perspective Correction
 Alleviate distortion from wide field of view.
@@ -18,6 +19,8 @@ Alleviate distortion from wide field of view.
 
 ## Chromatic Aberration
 Simulates the color fringing seen in lenses.
+Preprocessor definitions:
+`CA_JITTER`: Enable jittering of chromatic aberration samples (`0` off, `1` on).
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
