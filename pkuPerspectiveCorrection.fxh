@@ -9,11 +9,8 @@
 #ifndef PC_STEPS
 #define PC_STEPS 4
 #endif
-#ifndef TEXTURE_MODE
-#define TEXTURE_MODE 2
-#endif
-#ifndef TEX_LENGTH
-#define TEX_LENGTH 1024
+#ifndef LUT_MODE
+#define LUT_MODE 1
 #endif
 
 uniform float screenDistance < __UNIFORM_SLIDER_FLOAT1 ui_label = "Distance";
@@ -77,10 +74,12 @@ ui_step = 0.01;
 > = 0.5;
 #endif
 
-#if TEXTURE_MODE
+#if LUT_MODE
+#define LUT_SIZE 128
 texture2D PCTex < pooled = true;
 > {
-  Width = TEX_LENGTH;
+  Width = LUT_SIZE;
+  Height = LUT_SIZE;
   Format = R32F;
 };
 
@@ -176,8 +175,10 @@ float getOmega(float2 viewProp) {
                                    out float fs) {
     float omega = getOmega(viewProp);
     fs = getFs(omega);
-#if TEXTURE_MODE
-    return tex2D(PCSamp, radius).r;
+#if LUT_MODE
+    float lut_y = radius * LUT_SIZE + 0.5;
+    float lut_x = 0.5 + LUT_SIZE - frac(lut_y) * LUT_SIZE;
+    return tex2D(PCSamp, float2(lut_x, lut_y) / LUT_SIZE).r;
 #else
     return calculateCorrection(radius, viewProp, omega, fs);
 #endif
@@ -217,11 +218,11 @@ float getOmega(float2 viewProp) {
     float borderMask = GetBorderMask(viewCoordDistort);
     return lerp(color, float3(0f, 0f, 0f), borderMask);
   }
-#if TEXTURE_MODE
+#if LUT_MODE
   float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
       : SV_Target {
     float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
-    float radius = pos.x / TEX_LENGTH;
+    float radius = (pos.y + pos.x / (LUT_SIZE * LUT_SIZE)) / LUT_SIZE;
     float omega = getOmega(viewProp);
     float fs = getFs(omega);
     return calculateCorrection(radius, viewProp, omega, fs);
