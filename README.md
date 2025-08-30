@@ -2,17 +2,43 @@
 
 A collection of shader effects.
 
-[Similar effects in motion on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
+Effects are enabled using preprocessor flags:\
+`CHROMATIC_ABERRATION`\
+`FILM_GRAIN`\
+`PERSPECTIVE_CORRECTION`\
+`VIGNETTE`
+
+[Similar effects demonstrated on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
 ## Perspective Correction
 Alleviate distortion from wide field of view.
 
 [In-depth explanation in this white paper.](https://github.com/user-attachments/files/22053379/aMoreNaturalPerspective.pdf)
 
+User variables:\
+`Distance`: Distance from screen to viewer.\
+`Diagonal`: Size of the screen measured diagonally.\
+`FOV`: In-game field of view\
+`Zoom`: Scales the image, can minimize border as desired.[^1]
+[^1]: Changing this value impacts the correction calculations because zooming effectively changes the field of view.
+
+Preprocessor definitions:\
+`FOV_TYPE`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
+`LUT_MODE`: Enable storing of correction calculations to a lookup table.\
+`PC_STEPS`: Number of iterations for the correction solver.\
+`TEST_GRID`: Enable a test grid to visualize the correction surface.
+
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
 ## Chromatic Aberration
 Simulates the color fringing seen in lenses.
+
+User variables:\
+`Intensity`: Intensity of the effect
+
+Preprocessor definitions:\
+`CA_JITTER`: Enable jittering of samples (default: `1`, on).\
+`CA_SAMPLES`: Number of samples to use (default: `8`, multiple of 4 recommended).\
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
@@ -21,6 +47,9 @@ Adds noise to the image. Noise is applied to the luma rather that directly to co
 
 ## Vignette
 Simulates natural vignette as seen on imaging surfaces.
+
+User variables:\
+`Intensity`: Intensity of the effect
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Vignetting#Natural_vignetting)
 
