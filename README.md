@@ -20,8 +20,12 @@ Alleviate distortion from wide field of view.
 ## Chromatic Aberration
 Simulates the color fringing seen in lenses.
 
+User variables:\
+`Intensity`: Intensity of the effect
+
 Preprocessor definitions:\
-`CA_JITTER`: Enable jittering of chromatic aberration samples (`0` off, `1` on).
+`CA_JITTER`: Enable jittering of samples (default: `1`, on).\
+`CA_SAMPLES`: Number of samples to use (default: `8`, multiple of 4 recommended).\
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
