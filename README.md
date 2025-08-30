@@ -38,8 +38,8 @@ User variables:\
 `Intensity`: Intensity of the effect
 
 Preprocessor definitions:\
-`CA_JITTER`: Enable jittering of samples (default: `1`, on).\
-`CA_SAMPLES`: Number of samples to use (default: `8`, multiple of 4 recommended).\
+`CA_JITTER`: Enable jittering of samples.\
+`CA_SAMPLES`: Number of samples to use (multiple of 4 recommended).\
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
