@@ -2,11 +2,7 @@
 
 A collection of shader effects.
 
-Effects are enabled using preprocessor flags:\
-`CHROMATIC_ABERRATION`\
-`FILM_GRAIN`\
-`PERSPECTIVE_CORRECTION`\
-`VIGNETTE`
+Effects are enabled using preprocessor flags with the name of the effect.
 
 [Similar effects demonstrated on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
@@ -33,7 +29,7 @@ When using `LUT_MODE`, you must enable the `CreateCorrectionLUT` technique in or
 
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
-## Chromatic Aberration
+## `CHROMATIC_ABERRATION`
 ![chromaticAberration](https://github.com/user-attachments/assets/b9af79aa-2bbb-453e-92ef-b27755335994)
 
 Simulates the color fringing seen in lenses.
@@ -47,12 +43,12 @@ Preprocessor definitions:\
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
-## Film Grain
+## `FILM_GRAIN`
 ![filmGrain](https://github.com/user-attachments/assets/6a79628e-0e01-4acc-9f07-f6d745e9fb3c)
 
 Adds noise to the image. Noise is applied to the luma rather that directly to color values.
 
-## Vignette
+## `VIGNETTE`
 ![vignette](https://github.com/user-attachments/assets/95e3d2c3-e37a-4069-a9db-cd8f6e75b067)
 
 Simulates natural vignette as seen on imaging surfaces.
