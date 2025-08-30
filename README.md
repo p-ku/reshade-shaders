@@ -23,8 +23,10 @@ User variables:\
 [^1]: Changing this value impacts the correction calculations because zooming effectively changes the field of view.
 
 Preprocessor definitions:\
-`CA_JITTER`: Enable jittering of samples.\
-`CA_SAMPLES`: Number of samples to use (multiples of 4 recommended).\
+`FOV_TYPE`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
+`LUT_MODE`: Enable storing of correction calculations to a lookup table.\
+`PC_STEPS`: Number of iterations for the correction solver.\
+`TEST_GRID`: Enable a test grid to visualize the correction surface.
 
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
