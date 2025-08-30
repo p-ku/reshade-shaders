@@ -12,6 +12,7 @@ Effects are enabled using preprocessor flags:\
 
 ## Perspective Correction
 ![perspectiveCorrection](https://github.com/user-attachments/assets/2444a772-8f49-4620-bece-4881553ec698)
+<figcaption>Caption text</figcaption>
 
 Alleviate distortion from wide field of view.
 [In-depth explanation in this white paper.](https://github.com/user-attachments/files/22060919/aMoreNaturalPerspective.pdf)
