@@ -7,7 +7,6 @@ Effects are enabled using preprocessor flags:\
 `FILM_GRAIN`\
 `PERSPECTIVE_CORRECTION`\
 `VIGNETTE`\
-
 [Similar effects in motion on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
 ## Perspective Correction
