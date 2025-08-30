@@ -51,7 +51,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
   float fs = 0f;
 #if PERSPECTIVE_CORRECTION
-  float modRad = applyPerspectiveCorrection(pos.xy, viewCoord, viewProp, fs);
+  float modRad = applyPerspectiveCorrection(pos.xy, radius, viewProp, fs);
   float2 viewCoordDistort = modRad * normalize(viewCoord) / viewProp;
   float2 uv_distort = 0.5f * (1f + viewCoordDistort);
 #endif

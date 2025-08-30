@@ -10,11 +10,11 @@
 #define PC_STEPS 4
 #endif
 #ifndef TEXTURE_MODE
-#define TEXTURE_MODE 0
+#define TEXTURE_MODE 2
 #endif
-// #ifndef ORTHOGONAL_MODE
-// #define ORTHOGONAL_MODE 1
-// #endif
+#ifndef TEX_LENGTH
+#define TEX_LENGTH 1024
+#endif
 
 uniform float screenDistance < __UNIFORM_SLIDER_FLOAT1 ui_label = "Distance";
 ui_tooltip = "Physical distance from screen. Units for screen distance and "
@@ -34,7 +34,6 @@ ui_max = 200f;
 ui_category = "Perspective Correction";
 > = 27f;
 
-// #if !ORTHOGONAL_MODE
 uniform uint gameFov < __UNIFORM_SLIDER_INT1 ui_category_closed = true;
 ui_units = "°";
 ui_label = "FOV";
@@ -43,7 +42,6 @@ ui_min = 1u;
 ui_max = 180u;
 ui_category = "Perspective Correction";
 > = 75u;
-// #endif
 
 uniform float zoom_factor < __UNIFORM_SLIDER_FLOAT1 ui_label = "Zoom";
 ui_min = 0f;
@@ -78,11 +76,11 @@ ui_max = 1f;
 ui_step = 0.01;
 > = 0.5;
 #endif
+
 #if TEXTURE_MODE
 texture2D PCTex < pooled = true;
 > {
-  Width = BUFFER_WIDTH / 2;
-  Height = BUFFER_HEIGHT / 2;
+  Width = TEX_LENGTH;
   Format = R32F;
 };
 
@@ -120,17 +118,6 @@ float GetBorderMask(float2 borderCoord) {
   return aastep(max(borderCoord.x, borderCoord.y) - 1f);
 }
 
-// #if ORTHOGONAL_MODE
-// float3 field(float3 k, float r, float fa, float fs) {
-//   float x = k.x, y = k.y, s = k.z;
-//   float q = fa - y;
-
-//   float dxdr = q * q * q / (fa * (q * q + x * x));                   // dx/dr
-//   float dydr = q * q * x / (fa * (q * q + x * x));                   // dy/dr
-//   float dsdr = q * q * sqrt(x * x + q * q) / (fa * (q * q + x * x)); // ds/dr
-//   return float3(dxdr, dydr, dsdr);
-// }
-// #else
 //  The vector field:  dk/dr = f(k, r)
 float3 field(float3 k, float r, float fa, float fs) {
   float x = k.x, y = k.y, s = k.z;
@@ -143,7 +130,6 @@ float3 field(float3 k, float r, float fa, float fs) {
   float dsdr = q * q * C / (fa * B * q + fa * x * A); // ds/dr
   return float3(dxdr, dydr, dsdr);
 }
-// #endif
 
 //  A simple in‐shader RK4
 float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
@@ -180,21 +166,20 @@ float getOmega(float2 viewProp) {
     float realHalfRads = atan(0.5 * dim / screenDistance);
     return omega / tan(realHalfRads);
   }
-  float calculateCorrection(float2 pos, float2 viewCoord, float2 viewProp,
-                            float omega, float fs) {
-    float radius = length(viewCoord);
+  float calculateCorrection(float radius, float2 viewProp, float omega,
+                            float fs) {
     float fa = getFa(omega, viewProp);
     float3 k = integrateRK4(radius, viewProp, fa, fs);
     return k.z / zoom_factor;
   }
-  float applyPerspectiveCorrection(float2 pos, float2 viewCoord,
-                                   float2 viewProp, out float fs) {
+  float applyPerspectiveCorrection(float2 pos, float radius, float2 viewProp,
+                                   out float fs) {
     float omega = getOmega(viewProp);
     fs = getFs(omega);
 #if TEXTURE_MODE
-    return tex2Dfetch(PCSamp, abs(pos.xy + 0.5 - BUFFER_SCREEN_SIZE * 0.5f)).r;
+    return tex2D(PCSamp, radius).r;
 #else
-    return calculateCorrection(pos, viewCoord, viewProp, omega, fs);
+    return calculateCorrection(radius, viewProp, omega, fs);
 #endif
   }
 
@@ -236,12 +221,11 @@ float getOmega(float2 viewProp) {
   float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
       : SV_Target {
     float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
-    float2 viewCoord = uv * viewProp;
+    float radius = pos.x / TEX_LENGTH;
     float omega = getOmega(viewProp);
     float fs = getFs(omega);
-    return calculateCorrection(pos.xy, viewCoord, viewProp, omega, fs);
+    return calculateCorrection(radius, viewProp, omega, fs);
   }
-
   technique CreateTexture {
     pass {
       VertexShader = PostProcessVS; // the included fullscreen‐quad VS
