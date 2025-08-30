@@ -2,15 +2,11 @@
 
 A collection of shader effects.
 
-Effects are enabled using preprocessor flags:
-
-`CHROMATIC_ABERRATION`
-
-`FILM_GRAIN`
-
-`PERSPECTIVE_CORRECTION`
-
-`VIGNETTE`
+Effects are enabled using preprocessor flags:\
+`CHROMATIC_ABERRATION`\
+`FILM_GRAIN`\
+`PERSPECTIVE_CORRECTION`\
+`VIGNETTE`\
 
 [Similar effects in motion on Shadertoy.](https://www.shadertoy.com/view/lXjBWK)
 
