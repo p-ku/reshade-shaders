@@ -17,7 +17,7 @@ User variables:\
 `Diagonal`: Size of the screen measured diagonally.\
 `FOV`: In-game field of view\
 `Zoom`: Scales the image, can minimize border as desired.[^1]
-[^1]: Changing this value impacts the correction calculations because zooming effectively changes the field of view.
+[^1]: Zoom level is accounted for in correction calculations as it impacts the field of view.
 
 Preprocessor definitions:\
 `FOV_TYPE`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
