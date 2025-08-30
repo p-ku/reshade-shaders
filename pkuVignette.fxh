@@ -20,9 +20,9 @@ ui_category = "Vignette";
 
 float3 applyVignette(float3 color, float radius, float distance) {
 #if PERSPECTIVE_CORRECTION
-  float center_angle = atan(distance / radius / v_factor);
+  float center_angle = atan(v_factor * distance / radius);
 #else
-  float center_angle = atan((1f - v_amount) / radius);
+  float center_angle = atan(((1f - v_amount) / v_amount) / radius);
 #endif
   float vig = pow(cos(center_angle), 4f);
   return color * (1f - vig);
