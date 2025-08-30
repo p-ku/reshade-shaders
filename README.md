@@ -28,6 +28,8 @@ Preprocessor definitions:\
 `PC_STEPS`: Number of iterations for the correction solver.\
 `TEST_GRID`: Enable a test grid to visualize the correction surface.
 
+When using `LUT_MODE`, you must enable the `CreateTexture` technique in order to create the texture. Once the correction settings are dialed in, the `CreateTexture` technique should be disabled to improve performance.
+
 [Video demonstration.](https://youtu.be/FvE9wk0edbo)
 
 ## Chromatic Aberration
