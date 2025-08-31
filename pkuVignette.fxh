@@ -5,7 +5,7 @@ uniform float v_factor < ui_type = "slider";
 ui_category_closed = true;
 ui_label = "Intensity";
 ui_min = 0.0;
-ui_max = 1.0;
+ui_max = 2.0;
 ui_category = "Vignette";
 > = 1.0;
 #else
@@ -20,7 +20,7 @@ ui_category = "Vignette";
 
 float3 applyVignette(float3 color, float radius, float distance) {
 #if PERSPECTIVE_CORRECTION
-  float center_angle = atan(v_factor * distance / radius);
+  float center_angle = atan((1f / v_factor) * distance / radius);
 #else
   float center_angle = atan(((1f - v_amount) / v_amount) / radius);
 #endif
