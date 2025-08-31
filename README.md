@@ -56,7 +56,7 @@ Simulates natural vignette as seen on imaging surfaces.
 User variables:\
 `Intensity`: Intensity of the effect
 
-If `PERSPECTIVE_CORRECTION` is enabled, vignette will be calculated based on `FOV` and `Intensity` is a factor applied to that. Otherwise, `Intensity` will be the full range of possible intensities.
+If `PERSPECTIVE_CORRECTION` is enabled, vignette will be calculated based on `FOV` and `Intensity` is a factor. Otherwise, `Intensity` will be the full range of possible intensities.
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Vignetting#Natural_vignetting)
 
