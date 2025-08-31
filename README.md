@@ -24,7 +24,7 @@ Preprocessor definitions:\
 - `PC_STEPS`: Number of iterations for the correction solver.\
 - `TEST_GRID`: Enable a test grid to visualize the correction surface.
 - `LUT_MODE`: Enable storing of correction calculations to a lookup table.\
-  - `DX9_MODE`: When in `LUT_MODE`, there is a discrepancy noted between games that use DirectX 9 and DirectX 11. This enables a small adjustment in how the LUT is sampled when using DirectX 9.
+  - `DX9_MODE`: When in `LUT_MODE`, there is a discrepancy between games that use DirectX 9 and DirectX 11. This enables a small adjustment in how the LUT is sampled when using DirectX 9.
 
 When using `LUT_MODE`, you must enable the `CreateCorrectionLUT` technique in order to create the texture. Once the correction settings are dialed in, the `CreateCorrectionLUT` technique should be disabled to improve performance.
 
