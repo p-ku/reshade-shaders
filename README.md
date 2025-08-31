@@ -53,6 +53,8 @@ Adds noise to the image. Noise is applied to the luma rather that directly to co
 
 Simulates natural vignette as seen on imaging surfaces.
 
+If `PERSPECTIVE_CORRECTION` is enabled, vignette will be calculated based on `FOV` and `Intensity` is a factor applied to that. Otherwise, `Intensity` will be the full range of possible intensities.
+
 User variables:\
 `Intensity`: Intensity of the effect
 
