@@ -81,6 +81,9 @@ ui_step = 0.01;
 #endif
 
 #if LUT_MODE
+#ifndef DX9_MODE
+#define DX9_MODE 0
+#endif
 #define LUT_SIZE 128
 texture2D PCTex < pooled = true;
 > {
@@ -164,7 +167,7 @@ float getOmega(float2 viewProp) {
 
   float getFs(float omega) {
     float gameHalfRads = 0.5 * radians(gameFov);
-    return omega / tan(gameHalfRads);
+    return zoom_factor * omega / tan(gameHalfRads);
   }
   float getFa(float omega, float2 viewProp) {
     float dim = getPhysicalDimension(viewProp);
@@ -175,16 +178,20 @@ float getOmega(float2 viewProp) {
                             float fs) {
     float fa = getFa(omega, viewProp);
     float3 k = integrateRK4(radius, viewProp, fa, fs);
-    return k.z / zoom_factor;
+    return k.z;
   }
   float applyPerspectiveCorrection(float2 pos, float radius, float2 viewProp,
                                    out float fs) {
     float omega = getOmega(viewProp);
     fs = getFs(omega);
 #if LUT_MODE
-    float lut_y = radius * LUT_SIZE + 0.5;
-    float lut_x = 0.5 + LUT_SIZE - frac(lut_y) * LUT_SIZE;
-    return tex2D(PCSamp, float2(lut_x, lut_y) / LUT_SIZE).r;
+    float total_pixels = LUT_SIZE * LUT_SIZE;
+    float pixel_index = radius * (total_pixels - 1f);
+    float row = floor(pixel_index / LUT_SIZE);
+    float column = pixel_index - (row * LUT_SIZE);
+    float u = (column + 0.5) / LUT_SIZE;
+    float v = (row + 0.5) / LUT_SIZE;
+    return tex2D(PCSamp, float2(u, v)).r;
 #else
     return calculateCorrection(radius, viewProp, omega, fs);
 #endif
@@ -227,7 +234,11 @@ float getOmega(float2 viewProp) {
   float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
       : SV_Target {
     float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
-    float radius = (pos.y + pos.x / (LUT_SIZE * LUT_SIZE)) / LUT_SIZE;
+#if DX9_MODE
+    float radius = (pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
+#else
+    float radius = (-0.5f + pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
+#endif
     float omega = getOmega(viewProp);
     float fs = getFs(omega);
     return calculateCorrection(radius, viewProp, omega, fs);
