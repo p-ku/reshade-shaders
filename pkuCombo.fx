@@ -52,11 +52,11 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #if CHROMATIC_ABERRATION
-#if CA_JITTER
-  float white_noise = nrand(uv + frac(seconds));
-#else
   float white_noise = 0.5;
-#endif
+
+  if (jitter) {
+    white_noise = nrand(uv + frac(seconds));
+  }
 #if PERSPECTIVE_CORRECTION
   float3 display = applyChromaticAberration(uv_distort, viewCoord, viewProp,
                                             radius, white_noise);
