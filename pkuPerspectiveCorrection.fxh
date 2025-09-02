@@ -12,6 +12,9 @@
 #ifndef TEST_GRID
 #define TEST_GRID 0
 #endif
+#ifndef LUT_SIZE
+#define LUT_SIZE 128
+#endif
 #ifndef DX9_MODE
 #define DX9_MODE 0
 #endif
@@ -83,7 +86,6 @@ ui_step = 0.01;
 > = 0.5;
 #endif
 
-#define LUT_SIZE 128
 texture2D PCTex < pooled = true;
 > {
   Width = LUT_SIZE;
