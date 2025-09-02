@@ -107,18 +107,20 @@ texture2D PCTex < pooled = true;
 sampler2D PCSamp { Texture = PCTex; };
 
 float getPhysicalDimension(float2 aspect_ratio) {
+float value;
   if (FovType < 2) {
     float factor = ScreenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
                                          aspect_ratio.y * aspect_ratio.y);
     float2 dims = factor * aspect_ratio;
     if (FovType == 0) {
-      return dims.x;
+      value = dims.x;
     } else if (FovType == 1) {
-      return dims.y;
+      value = dims.y;
     }
   } else {
-    return ScreenDiagonal;
+    value = ScreenDiagonal;
   }
+  return value;
 }
 ///* Linear pixel step function for anti-aliasing by Jakub Max Fober.
 //   This algorithm is part of scientific paper:

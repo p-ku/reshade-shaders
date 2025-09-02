@@ -40,21 +40,8 @@ float triangle(float noise) {
   return sign(noise) * (1f - sqrt(1f - abs(noise)));
 }
 
-uint hash(uint x) {
-  x ^= x >> 17;
-  x *= 0xed5ad4bbU;
-  x ^= x >> 11;
-  x *= 0xac4c1b51U;
-  x ^= x >> 15;
-  x *= 0x31848babU;
-  x ^= x >> 14;
-  return x;
-}
-
-uint2 hash2D(uint x) { return uint2(hash(x), hash(x + 42)); }
-
 float3 applyDither(float3 color, uint2 pixelPos) {
-  uint2 dip = (hash2D(framecount) + pixelPos) % TEX_SIZE;
-  const float4 noise = triangle(2f * tex2Dfetch(Noise_Sampler, dip, 0) - 1f);
-  return color + (noise + 0.5) / QUANTIZATION_LEVEL;
+  const uint2 dip = (1337 * framecount + pixelPos) % uint2(TEX_SIZE, TEX_SIZE);
+  const float4 noise = triangle(2.0 * tex2Dfetch(Noise_Sampler, dip, 0) - 1.0);
+  return color + (noise + 0.5) / 1f;
 }
