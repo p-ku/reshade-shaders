@@ -1,6 +1,7 @@
 #pragma once
 
 uniform float FgIntensity < ui_type = "slider";
+ui_label = "Intensity";
 ui_min = 0.0;
 ui_max = 1.0;
 ui_text = "Film Grain";
