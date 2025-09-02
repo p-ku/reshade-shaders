@@ -6,7 +6,7 @@
 #define QUANTIZATION_LEVEL 1023u
 #endif
 
-#define TEX_SIZE 128u
+#define TEX_SIZE 64u
 uniform uint framecount < source = "framecount";
 > ;
 
