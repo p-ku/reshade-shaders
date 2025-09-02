@@ -9,7 +9,6 @@
 #endif
 
 uniform float ca_amount < ui_type = "drag";
-ui_category_closed = true;
 ui_category = "Chromatic Aberration";
 ui_label = "Intensity";
 ui_min = 0.0;

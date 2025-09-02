@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef FOV_TYPE   // 0 for horizontal
-#define FOV_TYPE 0 // 1 for vertical
-#endif             // 2 for diagonal
 #ifndef LIVE_LUT
 #define LIVE_LUT 1
 #endif
@@ -40,7 +37,6 @@ ui_category = "Perspective Correction";
 > = 27f;
 
 uniform uint gameFov < ui_type = "slider";
-ui_category_closed = true;
 ui_units = "°";
 ui_label = "FOV";
 ui_tooltip = "Should match in-game FOV value.";
@@ -48,6 +44,15 @@ ui_min = 1u;
 ui_max = 160u;
 ui_category = "Perspective Correction";
 > = 75u;
+
+uniform uint fovType < ui_type = "combo";
+ui_category = "In game";
+ui_label = "FOV Type";
+ui_tooltip = "How field of view is measured.";
+ui_items = "horizontal\0"
+           "vertical\0"
+           "diagonal\0";
+> = 0f;
 
 uniform float zoom_factor < ui_type = "slider";
 ui_label = "Zoom";
@@ -96,18 +101,18 @@ texture2D PCTex < pooled = true;
 sampler2D PCSamp { Texture = PCTex; };
 
 float getPhysicalDimension(float2 aspect_ratio) {
-#if FOV_TYPE < 2
-  float factor = screenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
-                                       aspect_ratio.y * aspect_ratio.y);
-  float2 dims = factor * aspect_ratio;
-#if FOV_TYPE == 0
-  return dims.x;
-#elif FOV_TYPE == 1
-  return dims.y;
-#endif
-#elif FOV_TYPE == 2
-  return screenDiagonal;
-#endif
+  if (fovType < 2) {
+    float factor = screenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
+                                         aspect_ratio.y * aspect_ratio.y);
+    float2 dims = factor * aspect_ratio;
+    if (fovType == 0) {
+      return dims.x;
+    } else if (fovType == 1) {
+      return dims.y;
+    }
+  } else {
+    return screenDiagonal;
+  }
 }
 ///* Linear pixel step function for anti-aliasing by Jakub Max Fober.
 //   This algorithm is part of scientific paper:
@@ -158,95 +163,95 @@ float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
   return k;
 }
 float getOmega(float2 viewProp) {
-#if FOV_TYPE == 0
-  return viewProp.x;
-#elif FOV_TYPE == 1
-  return viewProp.y;
-#elif FOV_TYPE == 2
-  return 1.0;
-#endif }
+  if (fovType == 0)
+    return viewProp.x;
+  else if (fovType == 1)
+    return viewProp.y;
+  else
+    return 1.0;
+}
 
-  float getFs(float omega) {
-    float gameHalfRads = 0.5 * radians(gameFov);
-    return zoom_factor * omega / tan(gameHalfRads);
-  }
-  float getFa(float omega, float2 viewProp) {
-    float dim = getPhysicalDimension(viewProp);
-    float realHalfRads = atan(0.5 * dim / screenDistance);
-    return omega / tan(realHalfRads);
-  }
-  float calculateCorrection(float radius, float2 viewProp, float omega,
-                            float fs) {
-    float fa = getFa(omega, viewProp);
-    float3 k = integrateRK4(radius, viewProp, fa, fs);
-    return k.z;
-  }
-  float applyPerspectiveCorrection(float2 pos, float radius, float2 viewProp,
-                                   out float fs) {
-    float omega = getOmega(viewProp);
-    fs = getFs(omega);
-    float total_pixels = LUT_SIZE * LUT_SIZE;
-    float pixel_index = radius * (total_pixels - 1f);
-    float row = floor(pixel_index / LUT_SIZE);
-    float column = pixel_index - (row * LUT_SIZE);
-    float u = (column + 0.5) / LUT_SIZE;
-    float v = (row + 0.5) / LUT_SIZE;
-    return tex2D(PCSamp, float2(u, v)).r;
-  }
+float getFs(float omega) {
+  float gameHalfRads = 0.5 * radians(gameFov);
+  return zoom_factor * omega / tan(gameHalfRads);
+}
+float getFa(float omega, float2 viewProp) {
+  float dim = getPhysicalDimension(viewProp);
+  float realHalfRads = atan(0.5 * dim / screenDistance);
+  return omega / tan(realHalfRads);
+}
+float calculateCorrection(float radius, float2 viewProp, float omega,
+                          float fs) {
+  float fa = getFa(omega, viewProp);
+  float3 k = integrateRK4(radius, viewProp, fa, fs);
+  return k.z;
+}
+float applyPerspectiveCorrection(float2 pos, float radius, float2 viewProp,
+                                 out float fs) {
+  float omega = getOmega(viewProp);
+  fs = getFs(omega);
+  float total_pixels = LUT_SIZE * LUT_SIZE;
+  float pixel_index = radius * (total_pixels - 1f);
+  float row = floor(pixel_index / LUT_SIZE);
+  float column = pixel_index - (row * LUT_SIZE);
+  float u = (column + 0.5) / LUT_SIZE;
+  float v = (row + 0.5) / LUT_SIZE;
+  return tex2D(PCSamp, float2(u, v)).r;
+}
 
 #if TEST_GRID
-  float3 GridModeViewPass(float3 color, float2 viewCoord) {
-    // Dim calibration background
-    color = saturate(color * (1f - BackgroundDim));
-    // Get coordinates pixel size
-    float2 delX = float2(ddx(viewCoord.x), ddy(viewCoord.x));
-    float2 delY = float2(ddx(viewCoord.y), ddy(viewCoord.y));
-    // Scale coordinates to grid size and center
-    viewCoord = frac(viewCoord * GridSize) - 0.5;
+float3 GridModeViewPass(float3 color, float2 viewCoord) {
+  // Dim calibration background
+  color = saturate(color * (1f - BackgroundDim));
+  // Get coordinates pixel size
+  float2 delX = float2(ddx(viewCoord.x), ddy(viewCoord.x));
+  float2 delY = float2(ddx(viewCoord.y), ddy(viewCoord.y));
+  // Scale coordinates to grid size and center
+  viewCoord = frac(viewCoord * GridSize) - 0.5;
 
-    /* Scale coordinates to pixel size for anti-aliasing of grid
-       using anti-aliasing step function from research paper
-       arXiv:2010.04077 [cs.GR] (2020) */
-    viewCoord *= float2(rsqrt(dot(delX, delX)), rsqrt(dot(delY, delY))) /
-                 GridSize; // pixel density
-    // Set grid with
-    viewCoord = saturate(GridThickness * 0.5 - abs(viewCoord)); // clamp values
-    // Apply calibration grid colors
-    color = lerp(float3(1f, 1f, 0f), color,
-                 (1f - viewCoord.x) * (1f - viewCoord.y));
-    if ((1f - viewCoord.x) * (1f - viewCoord.y) < 0f) {
-      return float3(1f, 0f, 0f);
-    }
-    return color; // background picture with grid superimposed over it
+  /* Scale coordinates to pixel size for anti-aliasing of grid
+     using anti-aliasing step function from research paper
+     arXiv:2010.04077 [cs.GR] (2020) */
+  viewCoord *= float2(rsqrt(dot(delX, delX)), rsqrt(dot(delY, delY))) /
+               GridSize; // pixel density
+  // Set grid with
+  viewCoord = saturate(GridThickness * 0.5 - abs(viewCoord)); // clamp values
+  // Apply calibration grid colors
+  color =
+      lerp(float3(1f, 1f, 0f), color, (1f - viewCoord.x) * (1f - viewCoord.y));
+  if ((1f - viewCoord.x) * (1f - viewCoord.y) < 0f) {
+    return float3(1f, 0f, 0f);
   }
+  return color; // background picture with grid superimposed over it
+}
 #endif
-  float3 applyBorder(float3 color, float2 viewCoordDistort) {
-    // Outside border mask with anti-aliasing
-    float2 absDistort = abs(viewCoordDistort);
+float3 applyBorder(float3 color, float2 viewCoordDistort) {
+  // Outside border mask with anti-aliasing
+  float2 absDistort = abs(viewCoordDistort);
 
-    float borderMask = GetBorderMask(viewCoordDistort);
-    return lerp(color, float3(0f, 0f, 0f), borderMask);
-  }
+  float borderMask = GetBorderMask(viewCoordDistort);
+  return lerp(color, float3(0f, 0f, 0f), borderMask);
+}
 
-  float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
-      : SV_Target {
-    float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
+float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
+    : SV_Target {
+  float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
 #if DX9_MODE
-    float radius = (pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
+  float radius = (pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
 #else
-    float radius = (-0.5f + pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
+  float radius = (-0.5f + pos.y + pos.x / (LUT_SIZE - 1f)) / LUT_SIZE;
 #endif
-    float omega = getOmega(viewProp);
-    float fs = getFs(omega);
-    return calculateCorrection(radius, viewProp, omega, fs);
-  }
+  float omega = getOmega(viewProp);
+  float fs = getFs(omega);
+  return calculateCorrection(radius, viewProp, omega, fs);
+}
 
 #if !LIVE_LUT
-  technique CreateCorrectionLUT {
-    pass {
-      VertexShader = pku_VS; // the included fullscreen‐quad VS
-      PixelShader = PS_Texture_Gen;
-      RenderTarget = PCTex; // render into texTarget
-    }
+technique CreateCorrectionLUT {
+  pass {
+    VertexShader = pku_VS; // the included fullscreen‐quad VS
+    PixelShader = PS_Texture_Gen;
+    RenderTarget = PCTex; // render into texTarget
   }
+}
 #endif

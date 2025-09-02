@@ -16,11 +16,11 @@ User variables:\
 - `Distance`: Distance from screen to viewer.\
 - `Diagonal`: Size of the screen measured diagonally.\
 - `FOV`: In-game field of view\
+- `FOV Type`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
 - `Zoom`: Scales the image, can minimize border as desired.[^1]
 [^1]: Zoom level is accounted for in correction calculations as it impacts the field of view.
 
 Preprocessor definitions:\
-- `FOV_TYPE`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
 - `PC_STEPS`: Number of iterations for the correction solver.\
 - `TEST_GRID`: Enable a test grid to visualize the correction surface.
 - `LIVE_LUT`: Calculate LUT every frame.\

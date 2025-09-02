@@ -2,7 +2,6 @@
 
 #if PERSPECTIVE_CORRECTION
 uniform float v_factor < ui_type = "slider";
-ui_category_closed = true;
 ui_label = "Intensity";
 ui_min = 0.0;
 ui_max = 2.0;
@@ -10,7 +9,6 @@ ui_category = "Vignette";
 > = 1.0;
 #else
 uniform float v_amount < ui_type = "slider";
-ui_category_closed = true;
 ui_label = "Intensity";
 ui_min = 0.0;
 ui_max = 1.0;
