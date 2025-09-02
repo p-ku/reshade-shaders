@@ -46,12 +46,12 @@ ui_category = "Perspective Correction";
 > = 75u;
 
 uniform uint fovType < ui_type = "combo";
-ui_category = "In game";
 ui_label = "FOV Type";
 ui_tooltip = "How field of view is measured.";
 ui_items = "horizontal\0"
            "vertical\0"
            "diagonal\0";
+ui_category = "Perspective Correction";
 > = 0f;
 
 uniform float zoom_factor < ui_type = "slider";
