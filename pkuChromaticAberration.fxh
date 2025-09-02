@@ -1,6 +1,6 @@
 #pragma once
 
-uniform float ca_amount < ui_type = "slider";
+uniform float CaIntensity < ui_type = "slider";
 ui_category = "Chromatic Aberration";
 ui_label = "Intensity";
 ui_min = 0.0;
@@ -24,7 +24,7 @@ float3 applyChromaticAberration(float2 uv, float2 viewCoord,
                                 float2 viewProportions, float radius,
                                 float noise) {
 
-  float blue_radius = cos(radius * ca_amount);
+  float blue_radius = cos(radius * CaIntensity);
   float2 blue_center_pos = viewCoord * blue_radius;
   float2 view_range = blue_center_pos - viewCoord;
   float2 uv_delta = view_range / viewProportions / samples;

@@ -3,27 +3,28 @@
 #ifndef PERSPECTIVE_CORRECTION
 #define PERSPECTIVE_CORRECTION 1
 #endif
+#if PERSPECTIVE_CORRECTION
+#include "pkuPerspectiveCorrection.fxh"
+#endif
 #ifndef CHROMATIC_ABERRATION
 #define CHROMATIC_ABERRATION 0
-#endif
-#ifndef VIGNETTE
-#define VIGNETTE 0
-#endif
-#ifndef FILM_GRAIN
-#define FILM_GRAIN 0
 #endif
 #if CHROMATIC_ABERRATION
 #include "pkuChromaticAberration.fxh"
 #endif
+#ifndef VIGNETTE
+#define VIGNETTE 0
+#endif
 #if VIGNETTE
 #include "pkuVignette.fxh"
+#endif
+#ifndef FILM_GRAIN
+#define FILM_GRAIN 0
 #endif
 #if FILM_GRAIN
 #include "pkuFilmGrain.fxh"
 #endif
-#if PERSPECTIVE_CORRECTION
-#include "pkuPerspectiveCorrection.fxh"
-#endif
+
 #if CHROMATIC_ABERRATION | FILM_GRAIN
 uniform float timer < source = "timer";
 > ;
@@ -43,7 +44,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
   float fs = 0f;
 #if PERSPECTIVE_CORRECTION
   float modRad =
-      applyPerspectiveCorrection(pos.xy, radius / zoom_factor, viewProp, fs);
+      applyPerspectiveCorrection(pos.xy, radius / ZoomFactor, viewProp, fs);
   float2 viewCoordDistort = modRad * normalize(viewCoord) / viewProp;
   float2 uv_distort = 0.5f * (1f + viewCoordDistort);
 #endif

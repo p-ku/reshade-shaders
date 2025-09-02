@@ -13,7 +13,7 @@
 #define DX9_MODE 0
 #endif
 
-uniform float screenDistance < ui_type = "slider";
+uniform float ScreenDistance < ui_type = "slider";
 ui_label = "Distance";
 ui_tooltip = "Physical distance from screen. Units for screen distance and "
              "screen diagonal should match.";
@@ -23,7 +23,7 @@ ui_max = 200f;
 ui_category = "Perspective Correction";
 > = 22f;
 
-uniform float screenDiagonal < ui_type = "slider";
+uniform float ScreenDiagonal < ui_type = "slider";
 ui_label = "Diagonal";
 ui_tooltip = "Physical length of screen diagonal. Units for screen distance "
              "and screen diagonal should match.";
@@ -33,7 +33,7 @@ ui_max = 200f;
 ui_category = "Perspective Correction";
 > = 27f;
 
-uniform uint gameFov < ui_type = "slider";
+uniform uint GameFov < ui_type = "slider";
 ui_units = "°";
 ui_label = "FOV";
 ui_tooltip = "Should match in-game FOV value.";
@@ -42,7 +42,7 @@ ui_max = 160u;
 ui_category = "Perspective Correction";
 > = 75u;
 
-uniform uint fovType < ui_type = "combo";
+uniform uint FovType < ui_type = "combo";
 ui_label = "FOV Type";
 ui_tooltip = "How field of view is measured.";
 ui_items = "horizontal\0"
@@ -51,7 +51,7 @@ ui_items = "horizontal\0"
 ui_category = "Perspective Correction";
 > = 0f;
 
-uniform float zoom_factor < ui_type = "slider";
+uniform float ZoomFactor < ui_type = "slider";
 ui_label = "Zoom";
 ui_tooltip = "Zooms entire window to compensate for the border.";
 ui_min = 0.5;
@@ -107,17 +107,17 @@ texture2D PCTex < pooled = true;
 sampler2D PCSamp { Texture = PCTex; };
 
 float getPhysicalDimension(float2 aspect_ratio) {
-  if (fovType < 2) {
-    float factor = screenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
+  if (FovType < 2) {
+    float factor = ScreenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
                                          aspect_ratio.y * aspect_ratio.y);
     float2 dims = factor * aspect_ratio;
-    if (fovType == 0) {
+    if (FovType == 0) {
       return dims.x;
-    } else if (fovType == 1) {
+    } else if (FovType == 1) {
       return dims.y;
     }
   } else {
-    return screenDiagonal;
+    return ScreenDiagonal;
   }
 }
 ///* Linear pixel step function for anti-aliasing by Jakub Max Fober.
@@ -169,21 +169,21 @@ float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
   return k;
 }
 float getOmega(float2 viewProp) {
-  if (fovType == 0)
+  if (FovType == 0)
     return viewProp.x;
-  else if (fovType == 1)
+  else if (FovType == 1)
     return viewProp.y;
   else
     return 1.0;
 }
 
 float getFs(float omega) {
-  float gameHalfRads = 0.5 * radians(gameFov);
-  return zoom_factor * omega / tan(gameHalfRads);
+  float gameHalfRads = 0.5 * radians(GameFov);
+  return ZoomFactor * omega / tan(gameHalfRads);
 }
 float getFa(float omega, float2 viewProp) {
   float dim = getPhysicalDimension(viewProp);
-  float realHalfRads = atan(0.5 * dim / screenDistance);
+  float realHalfRads = atan(0.5 * dim / ScreenDistance);
   return omega / tan(realHalfRads);
 }
 float calculateCorrection(float radius, float2 viewProp, float omega,
