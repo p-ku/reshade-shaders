@@ -56,5 +56,5 @@ uint2 hash2D(uint x) { return uint2(hash(x), hash(x + 42)); }
 float3 applyDither(float3 color, uint2 pixelPos) {
   uint2 dip = (hash2D(framecount) + pixelPos) % TEX_SIZE;
   const float4 noise = triangle(2f * tex2Dfetch(Noise_Sampler, dip, 0) - 1f);
-  return color + (noise + 0.5) / 1f;
+  return color + (noise + 0.5) / QUANTIZATION_LEVEL;
 }
