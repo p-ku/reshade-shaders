@@ -3,9 +3,6 @@
 #ifndef LIVE_LUT
 #define LIVE_LUT 1
 #endif
-#ifndef PC_STEPS
-#define PC_STEPS 4
-#endif
 #ifndef TEST_GRID
 #define TEST_GRID 0
 #endif
@@ -56,10 +53,19 @@ ui_category = "Perspective Correction";
 
 uniform float zoom_factor < ui_type = "slider";
 ui_label = "Zoom";
+ui_tooltip = "Zooms entire window to compensate for the border.";
 ui_min = 0.5;
 ui_max = 2f;
 ui_category = "Perspective Correction";
 > = 1f;
+
+uniform uint Steps < ui_type = "slider";
+ui_label = "Steps";
+ui_tooltip = "Number of iterations used by the numerical solver.";
+ui_min = 1u;
+ui_max = 16u;
+ui_category = "Perspective Correction";
+> = 4u;
 
 #if TEST_GRID
 uniform uint GridSize < ui_type = "slider";
@@ -147,11 +153,11 @@ float3 field(float3 k, float r, float fa, float fs) {
 
 //  A simple in‐shader RK4
 float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
-  float h = radius / PC_STEPS;
+  float h = radius / Steps;
   float r = 0;
   float3 k = float3(0, 0, 0);
 
-  for (int i = 0; i < PC_STEPS; i++) {
+  for (int i = 0; i < Steps; i++) {
     float3 k1 = field(k, r, fa, fs);
     float3 k2 = field(k + 0.5 * h * k1, r + 0.5 * h, fa, fs);
     float3 k3 = field(k + 0.5 * h * k2, r + 0.5 * h, fa, fs);

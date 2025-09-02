@@ -19,9 +19,9 @@ User variables:\
 - `FOV Type`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
 - `Zoom`: Scales the image, can minimize border as desired.[^1]
 [^1]: Zoom level is accounted for in correction calculations as it impacts the field of view.
+- `Steps`: Number of iterations for the correction solver.\
 
 Preprocessor definitions:\
-- `PC_STEPS`: Number of iterations for the correction solver.\
 - `TEST_GRID`: Enable a test grid to visualize the correction surface.
 - `LIVE_LUT`: Calculate LUT every frame.\
 - `LUT_SIZE`: Dimensions of the square LUT texture.\
