@@ -89,6 +89,13 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
   return applyDither(display, uint2(pos.xy));
 }
 technique pkuFX {
+#if LIVE_LUT
+  pass {
+    VertexShader = pku_VS; // the included fullscreen‐quad VS
+    PixelShader = PS_Texture_Gen;
+    RenderTarget = PCTex; // render into texTarget
+  }
+#endif
   pass {
     VertexShader = pku_VS;
     PixelShader = PS_Effects;

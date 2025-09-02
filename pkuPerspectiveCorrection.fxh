@@ -3,14 +3,17 @@
 #ifndef FOV_TYPE   // 0 for horizontal
 #define FOV_TYPE 0 // 1 for vertical
 #endif             // 2 for diagonal
-#ifndef LUT_MODE
-#define LUT_MODE 1
+#ifndef LIVE_LUT
+#define LIVE_LUT 1
 #endif
 #ifndef PC_STEPS
 #define PC_STEPS 4
 #endif
 #ifndef TEST_GRID
 #define TEST_GRID 0
+#endif
+#ifndef DX9_MODE
+#define DX9_MODE 0
 #endif
 
 uniform float screenDistance < ui_type = "slider";
@@ -80,10 +83,6 @@ ui_step = 0.01;
 > = 0.5;
 #endif
 
-#if LUT_MODE
-#ifndef DX9_MODE
-#define DX9_MODE 0
-#endif
 #define LUT_SIZE 128
 texture2D PCTex < pooled = true;
 > {
@@ -93,7 +92,7 @@ texture2D PCTex < pooled = true;
 };
 
 sampler2D PCSamp { Texture = PCTex; };
-#endif
+
 float getPhysicalDimension(float2 aspect_ratio) {
 #if FOV_TYPE < 2
   float factor = screenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
@@ -184,7 +183,6 @@ float getOmega(float2 viewProp) {
                                    out float fs) {
     float omega = getOmega(viewProp);
     fs = getFs(omega);
-#if LUT_MODE
     float total_pixels = LUT_SIZE * LUT_SIZE;
     float pixel_index = radius * (total_pixels - 1f);
     float row = floor(pixel_index / LUT_SIZE);
@@ -192,9 +190,6 @@ float getOmega(float2 viewProp) {
     float u = (column + 0.5) / LUT_SIZE;
     float v = (row + 0.5) / LUT_SIZE;
     return tex2D(PCSamp, float2(u, v)).r;
-#else
-    return calculateCorrection(radius, viewProp, omega, fs);
-#endif
   }
 
 #if TEST_GRID
@@ -230,7 +225,7 @@ float getOmega(float2 viewProp) {
     float borderMask = GetBorderMask(viewCoordDistort);
     return lerp(color, float3(0f, 0f, 0f), borderMask);
   }
-#if LUT_MODE
+
   float PS_Texture_Gen(float4 pos : SV_POSITION, float2 uv : TEXCOORD)
       : SV_Target {
     float2 viewProp = normalize(BUFFER_SCREEN_SIZE);
@@ -243,6 +238,8 @@ float getOmega(float2 viewProp) {
     float fs = getFs(omega);
     return calculateCorrection(radius, viewProp, omega, fs);
   }
+
+#if !LIVE_LUT
   technique CreateCorrectionLUT {
     pass {
       VertexShader = pku_VS; // the included fullscreen‐quad VS
