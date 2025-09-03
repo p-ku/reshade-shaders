@@ -11,7 +11,7 @@ uniform bool jitter < ui_type = "input";
 ui_category = "Chromatic Aberration";
 ui_label = "Jitter";
 ui_tooltip = "Jitter chromatic aberration samples.";
-> = false;
+> = true;
 
 uniform uint samples < ui_type = "slider";
 ui_category = "Chromatic Aberration";
