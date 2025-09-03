@@ -109,8 +109,7 @@ sampler2D PCSamp { Texture = PCTex; };
 float getPhysicalDimension(float2 aspect_ratio) {
   float value;
   if (FovType < 2) {
-    float factor = ScreenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
-                                         aspect_ratio.y * aspect_ratio.y);
+    float factor = ScreenDiagonal / sqrt(dot(aspect_ratio, aspect_ratio));
     float2 dims = factor * aspect_ratio;
     if (FovType == 0) {
       value = dims.x;
