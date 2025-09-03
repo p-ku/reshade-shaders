@@ -22,6 +22,7 @@ float3 applyVignette(float3 color, float radius, float distance) {
 #else
   float center_angle = atan(((1f - VAmount) / VAmount) / radius);
 #endif
-  float vig = pow(cos(center_angle), 4f);
+  float cosine = cos(center_angle);
+  float vig = cosine * cosine * cosine * cosine;
   return color * (1f - vig);
 }
