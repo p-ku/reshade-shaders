@@ -77,7 +77,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #if FILM_GRAIN
-  float film_noise = triangle(2.0 * nrand(uv + frac(seconds + 0.5)) - 1.0);
+  float film_noise = triangle(2f * nrand(uv + frac(seconds + 0.5)) - 1f);
   display = applyFilmGrain(display, film_noise);
 #endif
 
