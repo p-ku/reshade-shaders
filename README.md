@@ -41,8 +41,6 @@ User variables:
 - `Jitter`: Enable jittering of samples.
 - `Samples`: Number of samples to use (multiple of 4 recommended, or 2-3 for a more stylized effect).
 
-Preprocessor definitions:
-
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
 ## `FILM_GRAIN`
