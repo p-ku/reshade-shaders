@@ -225,9 +225,9 @@ float3 GridModeViewPass(float3 color, float2 viewCoord) {
   // Set grid with
   viewCoord = saturate(GridThickness * 0.5 - abs(viewCoord)); // clamp values
   // Apply calibration grid colors
-  color =
-      lerp(float3(1f, 1f, 0f), color, (1f - viewCoord.x) * (1f - viewCoord.y));
-  if ((1f - viewCoord.x) * (1f - viewCoord.y) < 0f) {
+  float2 complement = 1f - viewCoord;
+  color = lerp(float3(1f, 1f, 0f), color, complement.x * complement.y);
+  if (complement.x * complement.y < 0f) {
     return float3(1f, 0f, 0f);
   }
   return color; // background picture with grid superimposed over it

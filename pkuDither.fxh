@@ -41,7 +41,7 @@ float triangle(float noise) {
 }
 
 float3 applyDither(float3 color, uint2 pixelPos) {
-  uint2 dip = (pixelPos + framecount * uint2(43, 17)) % TEX_SIZE;
+  uint2 dip = (framecount * uint2(43, 17) + pixelPos) % TEX_SIZE;
   float4 noise = triangle(tex2Dfetch(Noise_Sampler, dip) * 2f - 1f);
   return color + (noise + 0.5) / QUANTIZATION_LEVEL;
 }

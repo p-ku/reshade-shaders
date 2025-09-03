@@ -46,7 +46,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
   float modRad =
       applyPerspectiveCorrection(pos.xy, radius / ZoomFactor, viewProp, fs);
   float2 viewCoordDistort = modRad * normalize(viewCoord) / viewProp;
-  float2 uv_distort = 0.5f * (1f + viewCoordDistort);
+  float2 uv_distort = 0.5f * viewCoordDistort + 0.5f;
 #endif
 #if CHROMATIC_ABERRATION | FILM_GRAIN
   float seconds = timer * 0.001;
@@ -77,7 +77,7 @@ float3 PS_Effects(float4 pos : SV_Position, float2 uv : TEXCOORD0,
 #endif
 
 #if FILM_GRAIN
-  float film_noise = triangle(2f * nrand(uv + frac(seconds + 0.5)) - 1f);
+  float film_noise = triangle(nrand(uv + frac(seconds + 0.5)) * 2f - 1f);
   display = applyFilmGrain(display, film_noise);
 #endif
 
