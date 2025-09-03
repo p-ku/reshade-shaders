@@ -107,7 +107,7 @@ texture2D PCTex < pooled = true;
 sampler2D PCSamp { Texture = PCTex; };
 
 float getPhysicalDimension(float2 aspect_ratio) {
-float value;
+  float value;
   if (FovType < 2) {
     float factor = ScreenDiagonal / sqrt(aspect_ratio.x * aspect_ratio.x +
                                          aspect_ratio.y * aspect_ratio.y);
@@ -156,8 +156,8 @@ float3 field(float3 k, float r, float fa, float fs) {
 //  A simple in‐shader RK4
 float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
   float h = radius / Steps;
-  float r = 0;
-  float3 k = float3(0, 0, 0);
+  float r = 0f;
+  float3 k = float3(0f, 0f, 0f);
 
   for (int i = 0; i < Steps; i++) {
     float3 k1 = field(k, r, fa, fs);
@@ -165,7 +165,7 @@ float3 integrateRK4(float radius, float2 aspect_ratio, float fa, float fs) {
     float3 k3 = field(k + 0.5 * h * k2, r + 0.5 * h, fa, fs);
     float3 k4 = field(k + h * k3, r + h, fa, fs);
 
-    k += (h / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4);
+    k += (h / 6f) * (k1 + 2f * k2 + 2f * k3 + k4);
     r += h;
   }
   return k;
@@ -176,7 +176,7 @@ float getOmega(float2 viewProp) {
   else if (FovType == 1)
     return viewProp.y;
   else
-    return 1.0;
+    return 1f;
 }
 
 float getFs(float omega) {
