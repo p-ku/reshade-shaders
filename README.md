@@ -12,19 +12,19 @@ Effects are enabled using preprocessor flags with the name of the effect.
 Alleviate distortion from wide field of view.
 [In-depth explanation in this white paper.](https://github.com/user-attachments/files/22060919/aMoreNaturalPerspective.pdf)
 
-User variables:\
-- `Distance`: Distance from screen to viewer.\
-- `Diagonal`: Size of the screen measured diagonally.\
-- `FOV`: In-game field of view\
-- `FOV Type`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)\
+User variables:
+- `Distance`: Distance from screen to viewer.
+- `Diagonal`: Size of the screen measured diagonally.
+- `FOV`: In-game field of view
+- `FOV Type`: How field of view is measured, horizontally (`0`), vertically(`1`), diagonally(`2`)
 - `Zoom`: Scales the image, can minimize border as desired.[^1]
 [^1]: Zoom level is accounted for in correction calculations as it impacts the field of view.
-- `Steps`: Number of iterations for the correction solver.\
+- `Steps`: Number of iterations for the correction solver.
 
-Preprocessor definitions:\
+Preprocessor definitions:
 - `TEST_GRID`: Enable a test grid to visualize the correction surface.
-- `LIVE_LUT`: Calculate LUT every frame.\
-- `LUT_SIZE`: Dimensions of the square LUT texture.\
+- `LIVE_LUT`: Calculate LUT every frame.
+- `LUT_SIZE`: Dimensions of the square LUT texture.
 - `DX9_MODE`: When in `LUT_MODE`, there is a discrepancy between games that use DirectX 9 and DirectX 11. This enables a small adjustment in how the LUT is sampled when using DirectX 9.
 
 When using `LUT_MODE`, you must enable the `CreateCorrectionLUT` technique in order to create the texture. Once the correction settings are dialed in, the `CreateCorrectionLUT` technique should be disabled to improve performance.
@@ -36,12 +36,12 @@ When using `LUT_MODE`, you must enable the `CreateCorrectionLUT` technique in or
 
 Simulates the color fringing seen in lenses.
 
-User variables:\
+User variables:
 - `Intensity`: Intensity of the effect
-- `Jitter`: Enable jittering of samples.\
-- `Samples`: Number of samples to use (multiple of 4 recommended, or 2-3 for a more stylized effect).\
+- `Jitter`: Enable jittering of samples.
+- `Samples`: Number of samples to use (multiple of 4 recommended, or 2-3 for a more stylized effect).
 
-Preprocessor definitions:\
+Preprocessor definitions:
 
 [Wikipedia explanation.](https://en.wikipedia.org/wiki/Chromatic_aberration)
 
@@ -50,7 +50,7 @@ Preprocessor definitions:\
 
 Adds noise to the image. Noise is applied to the luma rather that directly to color values.
 
-User variables:\
+User variables:
 - `Intensity`: Intensity of the effect
 
 ## `VIGNETTE`
@@ -58,7 +58,7 @@ User variables:\
 
 Simulates natural vignette as seen on imaging surfaces.
 
-User variables:\
+User variables:
 - `Intensity`: Intensity of the effect
 
 If `PERSPECTIVE_CORRECTION` is enabled, vignette will be calculated based on `FOV` and `Intensity` is a factor applied to the distance from the imaging surface. Otherwise, `Intensity` is the full range of distances, zero to infinity (at `1`).
